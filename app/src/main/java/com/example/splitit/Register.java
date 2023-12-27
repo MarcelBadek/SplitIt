@@ -58,9 +58,8 @@ public class Register extends AppCompatActivity {
         registerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String email, password;
-                email = String.valueOf(emailEditText.getText());
-                password = String.valueOf(passwordEditText.getText());
+                String email = String.valueOf(emailEditText.getText());
+                String password = String.valueOf(passwordEditText.getText());
 
                 if (TextUtils.isEmpty(email) || TextUtils.isEmpty(password)) {
                     Toast.makeText(Register.this, "Fill all data", Toast.LENGTH_SHORT).show();
