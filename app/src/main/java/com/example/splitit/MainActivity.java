@@ -14,6 +14,7 @@ public class MainActivity extends AppCompatActivity {
     FirebaseAuth mAuth;
     FirebaseUser user;
     Button logoutBtn;
+    Button createGroupBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,12 +30,22 @@ public class MainActivity extends AppCompatActivity {
         }
 
         logoutBtn = findViewById(R.id.btn_logout);
+        createGroupBtn = findViewById(R.id.btn_createGroup);
 
         logoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mAuth.signOut();
                 Intent intent = new Intent(getApplicationContext(), Login.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+        createGroupBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), GroupCreate.class);
                 startActivity(intent);
                 finish();
             }

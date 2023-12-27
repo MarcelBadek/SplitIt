@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -22,7 +23,8 @@ import java.util.Objects;
 
 public class Login extends AppCompatActivity {
     TextInputEditText emailEditText, passwordEditText;
-    Button loginBtn, registerBtn;
+    Button loginBtn;
+    TextView registerText;
     FirebaseAuth mAuth;
 
 
@@ -46,7 +48,7 @@ public class Login extends AppCompatActivity {
         emailEditText = findViewById(R.id.email);
         passwordEditText = findViewById(R.id.password);
         loginBtn = findViewById(R.id.btn_login);
-        registerBtn = findViewById(R.id.btn_register);
+        registerText = findViewById(R.id.btn_register);
 
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,7 +79,7 @@ public class Login extends AppCompatActivity {
             }
         });
 
-        registerBtn.setOnClickListener(new View.OnClickListener() {
+        registerText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), Register.class);

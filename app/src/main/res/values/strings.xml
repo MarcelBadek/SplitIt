@@ -6,4 +6,7 @@
     <string name="register">Register</string>
     <string name="logout">Logout</string>
     <string name="create_group">Create group</string>
+    <string name="group_name">Group name</string>
+    <string name="group_members">Group members</string>
+    <string name="back">Back</string>
 </resources>
