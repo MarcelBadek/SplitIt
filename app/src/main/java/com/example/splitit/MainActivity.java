@@ -50,6 +50,15 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         recyclerView.setAdapter(adapter);
 
+        adapter.setOnClickListener(new GroupAdapter.OnClickListener() {
+            @Override
+            public void onClick(int position, Group model) {
+                Intent intent = new Intent(getApplicationContext(), GroupView.class);
+                intent.putExtra("groupId", model.getId());
+                startActivity(intent);
+            }
+        });
+
         logoutBtn = findViewById(R.id.btn_logout);
         createGroupBtn = findViewById(R.id.btn_createGroup);
 
