@@ -16,6 +16,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
@@ -25,7 +26,7 @@ import java.util.UUID;
 public class GroupCreate extends AppCompatActivity {
     FirebaseAuth mAuth;
     FirebaseUser user;
-    FirebaseFirestore db;
+    CollectionReference db;
     TextInputEditText nameEditText;
     TextView backText;
     Button createGroupBtn;
@@ -37,7 +38,7 @@ public class GroupCreate extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
 
-        db = FirebaseFirestore.getInstance();
+        db = FirebaseFirestore.getInstance().collection("groups");
         nameEditText = findViewById(R.id.name);
         backText = findViewById(R.id.back);
         createGroupBtn = findViewById(R.id.btn_createGroup);
@@ -57,7 +58,7 @@ public class GroupCreate extends AppCompatActivity {
                 String name = String.valueOf(nameEditText.getText());
                 Group newGroup = new Group(name, new ArrayList<>(Collections.singleton(user.getUid())), null);
                 try {
-                    db.collection("groups").document(UUID.randomUUID().toString()).set(newGroup).addOnSuccessListener(new OnSuccessListener() {
+                    db.document(UUID.randomUUID().toString()).set(newGroup).addOnSuccessListener(new OnSuccessListener() {
                                 @Override
                                 public void onSuccess(Object o) {
                                     Toast.makeText(GroupCreate.this, "Success", Toast.LENGTH_SHORT).show();
