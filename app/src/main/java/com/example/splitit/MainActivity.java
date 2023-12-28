@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
 
         db = FirebaseFirestore.getInstance().collection("groups");
         recyclerView = findViewById(R.id.recycler_view);
-        Query query = db.orderBy("name");
+        Query query = db.whereArrayContains("members", user.getUid()).orderBy("name");
         FirestoreRecyclerOptions<Group> options = new FirestoreRecyclerOptions.Builder<Group>()
                 .setQuery(query, Group.class)
                 .build();
