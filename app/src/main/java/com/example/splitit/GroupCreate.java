@@ -55,10 +55,11 @@ public class GroupCreate extends AppCompatActivity {
         createGroupBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                UUID id = UUID.randomUUID();
                 String name = String.valueOf(nameEditText.getText());
-                Group newGroup = new Group(name, new ArrayList<>(Collections.singleton(user.getUid())), null);
+                Group newGroup = new Group(id.toString(), name, new ArrayList<>(Collections.singleton(user.getUid())), null);
                 try {
-                    db.document(UUID.randomUUID().toString()).set(newGroup).addOnSuccessListener(new OnSuccessListener() {
+                    db.document(id.toString()).set(newGroup).addOnSuccessListener(new OnSuccessListener() {
                                 @Override
                                 public void onSuccess(Object o) {
                                     Toast.makeText(GroupCreate.this, "Success", Toast.LENGTH_SHORT).show();
