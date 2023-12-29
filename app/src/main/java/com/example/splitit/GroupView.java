@@ -2,6 +2,8 @@ package com.example.splitit;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,6 +25,8 @@ import java.util.Objects;
 
 public class GroupView extends AppCompatActivity {
     TextView nameTV;
+    Button addMemberBtn;
+    Button addBillBtn;
     CollectionReference collection;
     String groupId;
     Group group;
@@ -34,6 +38,9 @@ public class GroupView extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_view);
         groupId = Objects.requireNonNull(getIntent().getExtras()).getString("groupId");
+
+        addMemberBtn = findViewById(R.id.btn_addMember);
+
         collection = FirebaseFirestore.getInstance().collection("groups");
         collection.document(groupId).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -54,6 +61,16 @@ public class GroupView extends AppCompatActivity {
                     startActivity(new Intent(getApplicationContext(), MainActivity.class));
                     finish();
                 }
+            }
+        });
+
+        addMemberBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), GroupAddMember.class);
+                intent.putExtra("groupId", groupId);
+                startActivity(intent);
+                finish();
             }
         });
     }
