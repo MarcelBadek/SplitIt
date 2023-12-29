@@ -7,10 +7,10 @@ public class Group {
 
     private String id;
     private String name;
-    private List<String> members;
+    private List<Member> members;
     private List<Bill> bills;
 
-    public Group(String id, String name, List<String> members, List<Bill> bills) {
+    public Group(String id, String name, List<Member> members, List<Bill> bills) {
         this.id = id;
         this.name = name;
         this.members = members;
@@ -37,11 +37,11 @@ public class Group {
         this.name = name;
     }
 
-    public List<String> getMembers() {
+    public List<Member> getMembers() {
         return members;
     }
 
-    public void setMembers(List<String> members) {
+    public void setMembers(List<Member> members) {
         this.members = members;
     }
 
