@@ -15,6 +15,9 @@
         android:theme="@style/Theme.SplitIt"
         tools:targetApi="31">
         <activity
+            android:name=".GroupAddMember"
+            android:exported="false" />
+        <activity
             android:name=".GroupView"
             android:exported="false" />
         <activity
