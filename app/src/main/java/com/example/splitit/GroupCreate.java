@@ -1,5 +1,6 @@
 package com.example.splitit;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -79,6 +80,14 @@ public class GroupCreate extends AppCompatActivity {
                     Toast.makeText(GroupCreate.this, e.getMessage(), Toast.LENGTH_LONG).show();
                 }
 
+            }
+        });
+
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                finish();
             }
         });
     }

@@ -1,5 +1,6 @@
 package com.example.splitit;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -89,6 +90,16 @@ public class GroupAddMember extends AppCompatActivity {
         backTV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), GroupView.class);
+                intent.putExtra("groupId", groupId);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
                 Intent intent = new Intent(getApplicationContext(), GroupView.class);
                 intent.putExtra("groupId", groupId);
                 startActivity(intent);
