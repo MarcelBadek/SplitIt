@@ -4,11 +4,11 @@ import java.util.List;
 
 public class Bill {
     private String name;
-    private List<String> members;
+    private List<Member> members;
 
     public Bill() {}
 
-    public Bill(String name, List<String> members) {
+    public Bill(String name, List<Member> members) {
         this.name = name;
         this.members = members;
     }
@@ -20,11 +20,11 @@ public class Bill {
         this.name = name;
     }
 
-    public List<String> getMembers() {
+    public List<Member> getMembers() {
         return members;
     }
 
-    public void setMembers(List<String> members) {
+    public void setMembers(List<Member> members) {
         this.members = members;
     }
 

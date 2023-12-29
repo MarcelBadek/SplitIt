@@ -14,24 +14,10 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.storage.FirebaseStorage;
 
 public class GroupAdapter extends FirestoreRecyclerAdapter<Group, GroupViewHolder> {
-    private FirebaseStorage storage;
     private OnClickListener onClickListener;
-
-    public GroupAdapter(@NonNull FirestoreRecyclerOptions<Group> options, FirebaseStorage storage) {
-        super(options);
-        this.storage = storage;
-    }
 
     public GroupAdapter(@NonNull FirestoreRecyclerOptions<Group> options) {
         super(options);
-        this.storage = FirebaseStorage.getInstance();
-    }
-
-    @NonNull
-    @Override
-    public GroupViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.group_entry, parent, false);
-        return new GroupViewHolder(v);
     }
 
     @Override
@@ -46,6 +32,13 @@ public class GroupAdapter extends FirestoreRecyclerAdapter<Group, GroupViewHolde
                 }
             }
         });
+    }
+
+    @NonNull
+    @Override
+    public GroupViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.group_entry, parent, false);
+        return new GroupViewHolder(v);
     }
 
     public void setOnClickListener(OnClickListener onClickListener) {

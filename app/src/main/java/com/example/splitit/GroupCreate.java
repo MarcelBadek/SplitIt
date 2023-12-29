@@ -11,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.splitit.Model.Group;
+import com.example.splitit.Model.Member;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.textfield.TextInputEditText;
@@ -57,7 +58,7 @@ public class GroupCreate extends AppCompatActivity {
             public void onClick(View v) {
                 UUID id = UUID.randomUUID();
                 String name = String.valueOf(nameEditText.getText());
-                Group newGroup = new Group(id.toString(), name, new ArrayList<>(Collections.singleton(user.getUid())), null);
+                Group newGroup = new Group(id.toString(), name, new ArrayList<>(Collections.singleton(new Member(user.getEmail()))), null);
                 try {
                     db.document(id.toString()).set(newGroup).addOnSuccessListener(new OnSuccessListener() {
                                 @Override
