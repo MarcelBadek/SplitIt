@@ -11,12 +11,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.splitit.Adapter.GroupAdapter;
 import com.example.splitit.Model.Group;
+import com.example.splitit.Model.Member;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
     FirebaseAuth mAuth;
@@ -42,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
 
         db = FirebaseFirestore.getInstance().collection("groups");
         recyclerView = findViewById(R.id.recycler_view);
-        Query query = db.whereArrayContains("members", user.getUid()).orderBy("name");
+        Query query = db.whereArrayContains("members", new Member(user.getEmail())).orderBy("name");
         FirestoreRecyclerOptions<Group> options = new FirestoreRecyclerOptions.Builder<Group>()
                 .setQuery(query, Group.class)
                 .build();
