@@ -9,4 +9,6 @@
     <string name="group_name">Group name</string>
     <string name="group_members">Group members</string>
     <string name="back">Back</string>
+    <string name="add_member">Add member</string>
+    <string name="add_bill">Add bill</string>
 </resources>
