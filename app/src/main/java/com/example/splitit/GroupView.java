@@ -6,7 +6,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.window.OnBackInvokedDispatcher;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
@@ -20,10 +19,10 @@ import com.example.splitit.Model.Group;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Objects;
 
@@ -45,7 +44,7 @@ public class GroupView extends AppCompatActivity {
         groupId = Objects.requireNonNull(getIntent().getExtras()).getString("groupId");
 
         addMemberBtn = findViewById(R.id.btn_addMember);
-
+        addBillBtn = findViewById(R.id.btn_addBill);
 
         collection = FirebaseFirestore.getInstance().collection("groups");
         collection.document(groupId).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -80,6 +79,16 @@ public class GroupView extends AppCompatActivity {
             }
         });
 
+        addBillBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), GroupAddBill.class);
+                intent.putExtra("groupId", groupId);
+                startActivity(intent);
+                finish();
+            }
+        });
+
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
@@ -95,19 +104,17 @@ public class GroupView extends AppCompatActivity {
         nameTV.setText(group.getName());
 
         List<Bill> bills = group.getBills();
-        if (bills != null && bills.size() != 0) {
-            double cost = 0;
+        double cost = 0;
+        if (bills != null) {
             for (int i = 0; i < bills.size(); i++) {
                 cost += bills.get(i).getPrice();
             }
-            totalCostTV.setText("Total cost: " + cost + "$");
-        } else {
-            totalCostTV.setText("Total cost: 0$");
         }
+
+        totalCostTV.setText("Total cost: " + cost + "$");
     }
 
     private void setRecyclerView() {
-        DocumentReference document = FirebaseFirestore.getInstance().collection("groups").document(groupId);
         recyclerView = findViewById(R.id.recycler_view);
         adapter = new MemberAdapter(group.getMembers());
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
