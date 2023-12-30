@@ -12,4 +12,6 @@
     <string name="add_member">Add member</string>
     <string name="add_bill">Add bill</string>
     <string name="user_email">User email</string>
+    <string name="name">Name</string>
+    <string name="price">Price</string>
 </resources>
