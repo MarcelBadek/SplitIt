@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.example.splitit.Model.Group;
 import com.example.splitit.Model.Member;
+import com.example.splitit.Model.Transaction;
 import com.example.splitit.utils.Reckoning;
 
 import java.util.ArrayList;
@@ -26,16 +27,34 @@ public class MemberReckoning extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_member_reckoning);
         group = (Group) getIntent().getSerializableExtra("group");
+
+
+
         testTV = findViewById(R.id.test);
 
-        HashMap<String, Double> result = Reckoning.calculate(group);
 
         List<String> entries = new ArrayList<>();
-        result.forEach((key, value) -> {
+
+        HashMap<String, Double> result1 = Reckoning.calculateBalance(group);
+
+        result1.forEach((key, value) -> {
             entries.add(key + " " + value + "\n");
+        });
+        entries.add("\n");
+        entries.add("\n");
+        entries.add("\n");
+
+        List<Transaction> reuslt2 = Reckoning.calculateTransactions(result1);
+        reuslt2.forEach(transaction -> {
+            entries.add("FROM " + transaction.getFrom() + " TO " + transaction.getTo() + " : " + transaction.getPrice() + "\n");
         });
 
         testTV.setText(entries.toString());
+
+
+
+
+
 
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
             @Override
