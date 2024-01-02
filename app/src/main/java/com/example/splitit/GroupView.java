@@ -17,6 +17,7 @@ import com.example.splitit.Adapter.MemberAdapter;
 import com.example.splitit.Model.Bill;
 import com.example.splitit.Model.Group;
 import com.example.splitit.Model.Member;
+import com.example.splitit.utils.Reckoning;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
@@ -24,6 +25,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.DecimalFormat;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
@@ -37,6 +39,7 @@ public class GroupView extends AppCompatActivity {
     Group group;
     RecyclerView recyclerView;
     MemberAdapter adapter;
+    HashMap<String, Double> balance;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +58,7 @@ public class GroupView extends AppCompatActivity {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
                         group = document.toObject(Group.class);
+                        balance = Reckoning.calculateBalance(group);
                         setDisplayInfo();
                         setRecyclerView();
                     } else {
@@ -112,12 +116,13 @@ public class GroupView extends AppCompatActivity {
             }
         }
 
-        totalCostTV.setText("Total cost: " + cost + "$");
+        DecimalFormat decimalFormat = new DecimalFormat("0.00");
+        totalCostTV.setText("Total cost: " + decimalFormat.format(cost) + "$");
     }
 
     private void setRecyclerView() {
         recyclerView = findViewById(R.id.recycler_view);
-        adapter = new MemberAdapter(group.getMembers());
+        adapter = new MemberAdapter(group.getMembers(), balance);
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         recyclerView.setAdapter(adapter);
 
