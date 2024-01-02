@@ -16,14 +16,18 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.storage.FirebaseStorage;
 
+import java.text.DecimalFormat;
+import java.util.HashMap;
 import java.util.List;
 
 public class MemberAdapter extends RecyclerView.Adapter<MemberViewHolder> {
     private List<Member> members;
+    private HashMap<String, Double> balance;
     private OnClickListener onClickListener;
 
-    public MemberAdapter(List<Member> members) {
+    public MemberAdapter(List<Member> members, HashMap<String, Double> balance) {
         this.members = members;
+        this.balance = balance;
     }
 
     @NonNull
@@ -35,6 +39,9 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull MemberViewHolder holder, int position) {
         holder.emailTV.setText(members.get(position).getEmail());
+
+        DecimalFormat decimalFormat = new DecimalFormat("0.00");
+        holder.balanceTV.setText(decimalFormat.format(balance.get(members.get(position).getEmail())) + "$");
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
