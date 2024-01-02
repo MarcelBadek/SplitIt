@@ -1,6 +1,8 @@
 package com.example.splitit.Model;
 
-public class Member {
+import java.io.Serializable;
+
+public class Member implements Serializable {
     private String email;
     public Member() {}
 
