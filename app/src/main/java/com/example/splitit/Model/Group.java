@@ -1,9 +1,9 @@
 package com.example.splitit.Model;
 
+import java.io.Serializable;
 import java.util.List;
-import java.util.UUID;
 
-public class Group {
+public class Group implements Serializable {
 
     private String id;
     private String name;

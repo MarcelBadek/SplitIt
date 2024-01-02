@@ -59,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), GroupView.class);
                 intent.putExtra("groupId", model.getId());
                 startActivity(intent);
+                finish();
             }
         });
 
