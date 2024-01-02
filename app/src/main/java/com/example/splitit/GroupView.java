@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.splitit.Adapter.MemberAdapter;
 import com.example.splitit.Model.Bill;
 import com.example.splitit.Model.Group;
+import com.example.splitit.Model.Member;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
@@ -119,5 +120,15 @@ public class GroupView extends AppCompatActivity {
         adapter = new MemberAdapter(group.getMembers());
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         recyclerView.setAdapter(adapter);
+
+        adapter.setOnClickListener(new MemberAdapter.OnClickListener() {
+            @Override
+            public void onClick(int position, Member model) {
+                Intent intent = new Intent(getApplicationContext(), MemberReckoning.class);
+                intent.putExtra("group", group);
+                startActivity(intent);
+                finish();
+            }
+        });
     }
 }

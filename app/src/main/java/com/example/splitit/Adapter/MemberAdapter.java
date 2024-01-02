@@ -35,6 +35,15 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull MemberViewHolder holder, int position) {
         holder.emailTV.setText(members.get(position).getEmail());
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (onClickListener != null) {
+                    onClickListener.onClick(holder.getBindingAdapterPosition(), members.get(holder.getBindingAdapterPosition()));
+                }
+            }
+        });
     }
 
     @Override
