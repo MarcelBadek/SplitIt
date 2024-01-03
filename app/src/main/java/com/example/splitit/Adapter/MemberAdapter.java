@@ -41,7 +41,11 @@ public class MemberAdapter extends RecyclerView.Adapter<MemberViewHolder> {
         holder.emailTV.setText(members.get(position).getEmail());
 
         DecimalFormat decimalFormat = new DecimalFormat("0.00");
-        holder.balanceTV.setText(decimalFormat.format(balance.get(members.get(position).getEmail())) + "$");
+        Double value = 0d;
+        if (balance.containsKey(members.get(position).getEmail())) {
+            value = balance.get(members.get(position).getEmail());
+        }
+        holder.balanceTV.setText(decimalFormat.format(value) + "$");
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

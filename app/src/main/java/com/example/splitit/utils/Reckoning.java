@@ -18,6 +18,13 @@ import java.util.Objects;
 public class Reckoning {
     public static HashMap<String, Double> calculateBalance(Group group) {
         HashMap<String, Double> pairs = new HashMap<>();
+
+        if (group.getBills() == null) {
+            return pairs;
+        } else if (group.getBills().isEmpty()) {
+            return pairs;
+        }
+
         group.getMembers().forEach(member -> {
             pairs.put(member.getEmail(), 0d);
         });
@@ -44,8 +51,19 @@ public class Reckoning {
 
     public static List<Transaction> calculateTransactions(HashMap<String, Double> balance) {
         List<Transaction> transactions = new ArrayList<>();
+
+        if (balance == null) {
+            return transactions;
+        } else if (balance.isEmpty()) {
+            return transactions;
+        }
+
         HashMap<String, Double> debtors = new HashMap<>();
         HashMap<String, Double> creditors = new HashMap<>();
+        String creditorKey;
+        Double creditorValue;
+        String debtorKey;
+        Double debtorValue;
 
         balance.forEach((key, value) -> {
             if (value < 0) {
@@ -55,12 +73,12 @@ public class Reckoning {
             }
         });
 
-        while (debtors.size() > 0) {
-            String creditorKey = Collections.max(creditors.entrySet(), Map.Entry.comparingByValue()).getKey();
-            Double creditorValue = creditors.get(creditorKey);
+        while (debtors.size() > 0 && creditors.size() > 0) {
+            creditorKey = Collections.max(creditors.entrySet(), Map.Entry.comparingByValue()).getKey();
+            creditorValue = creditors.get(creditorKey);
 
-            String debtorKey = Collections.max(debtors.entrySet(), Map.Entry.comparingByValue()).getKey();
-            Double debtorValue = debtors.get(debtorKey);
+            debtorKey = Collections.max(debtors.entrySet(), Map.Entry.comparingByValue()).getKey();
+            debtorValue = debtors.get(debtorKey);
 
             if (abs(debtorValue) > creditorValue) {
                 transactions.add(new Transaction(debtorKey, creditorKey, creditorValue));
