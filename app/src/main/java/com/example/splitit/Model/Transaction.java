@@ -1,6 +1,8 @@
 package com.example.splitit.Model;
 
-public class Transaction {
+import java.io.Serializable;
+
+public class Transaction implements Serializable {
     private final String from;
     private final String to;
     private final Double price;
