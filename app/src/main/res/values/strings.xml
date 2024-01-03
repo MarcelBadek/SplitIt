@@ -14,4 +14,5 @@
     <string name="user_email">User email</string>
     <string name="name">Name</string>
     <string name="price">Price</string>
+    <string name="ok">Ok</string>
 </resources>
