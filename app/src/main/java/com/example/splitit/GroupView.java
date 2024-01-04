@@ -117,7 +117,7 @@ public class GroupView extends AppCompatActivity {
         totalCostTV = findViewById(R.id.total_cost);
         nameTV.setText(group.getName());
 
-        List<Bill> bills = group.getBills();
+        List<Bill> bills = group.getCurrentBills();
         double cost = 0;
         if (bills != null) {
             for (int i = 0; i < bills.size(); i++) {

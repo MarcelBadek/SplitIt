@@ -13,7 +13,6 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.splitit.Adapter.BillAdapter;
-import com.example.splitit.Adapter.MemberAdapter;
 import com.example.splitit.Model.Bill;
 import com.example.splitit.Model.Group;
 import com.example.splitit.Model.Member;
@@ -117,12 +116,12 @@ public class GroupAddBill extends AppCompatActivity {
                                     return;
                                 }
                                 Bill bill = new Bill(UUID.randomUUID().toString(), name, price, selected, member);
-                                if (group.getBills() == null) {
-                                    group.setBills(new ArrayList<>());
+                                if (group.getCurrentBills() == null) {
+                                    group.setCurrentBills(new ArrayList<>());
                                 }
-                                group.getBills().add(bill);
+                                group.getCurrentBills().add(bill);
 
-                                document.update("bills", group.getBills()).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                document.update("currentBills", group.getCurrentBills()).addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void unused) {
                                         Intent intent = new Intent(getApplicationContext(), GroupView.class);

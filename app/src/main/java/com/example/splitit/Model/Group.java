@@ -7,14 +7,18 @@ public class Group implements Serializable {
 
     private String id;
     private String name;
+    private Member owner;
     private List<Member> members;
-    private List<Bill> bills;
+    private List<Bill> currentBills;
+    private List<Bill> settledBills;
 
-    public Group(String id, String name, List<Member> members, List<Bill> bills) {
+    public Group(String id, String name, Member owner, List<Member> members, List<Bill> currentBills) {
         this.id = id;
         this.name = name;
+        this.owner = owner;
         this.members = members;
-        this.bills = bills;
+        this.currentBills = currentBills;
+        settledBills = null;
     }
 
     public Group() {
@@ -28,13 +32,20 @@ public class Group implements Serializable {
         this.id = id;
     }
 
-
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Member getOwner() {
+        return owner;
+    }
+
+    public void setOwner(Member owner) {
+        this.owner = owner;
     }
 
     public List<Member> getMembers() {
@@ -45,11 +56,19 @@ public class Group implements Serializable {
         this.members = members;
     }
 
-    public List<Bill> getBills() {
-        return bills;
+    public List<Bill> getCurrentBills() {
+        return currentBills;
     }
 
-    public void setBills(List<Bill> bills) {
-        this.bills = bills;
+    public void setCurrentBills(List<Bill> currentBills) {
+        this.currentBills = currentBills;
+    }
+
+    public List<Bill> getSettledBills() {
+        return settledBills;
+    }
+
+    public void setSettledBills(List<Bill> settledBills) {
+        this.settledBills = settledBills;
     }
 }

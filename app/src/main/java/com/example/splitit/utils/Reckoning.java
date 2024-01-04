@@ -8,7 +8,6 @@ import com.example.splitit.Model.Transaction;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -19,9 +18,9 @@ public class Reckoning {
     public static HashMap<String, Double> calculateBalance(Group group) {
         HashMap<String, Double> pairs = new HashMap<>();
 
-        if (group.getBills() == null) {
+        if (group.getCurrentBills() == null) {
             return pairs;
-        } else if (group.getBills().isEmpty()) {
+        } else if (group.getCurrentBills().isEmpty()) {
             return pairs;
         }
 
@@ -29,17 +28,22 @@ public class Reckoning {
             pairs.put(member.getEmail(), 0d);
         });
 
-        group.getBills().forEach(bill -> {
+        group.getCurrentBills().forEach(bill -> {
             double perPersonCost = bill.getPrice() / bill.getMembers().size();
             double whoPaiedCost = bill.getPrice() - perPersonCost;
 
+            if (!bill.getMembers().contains(bill.getWhoPaied())) {
+                pairs.replace(bill.getWhoPaied().getEmail(), pairs.get(bill.getWhoPaied().getEmail()) + bill.getPrice());
+            } else {
+                pairs.replace(bill.getWhoPaied().getEmail(), pairs.get(bill.getWhoPaied().getEmail()) + whoPaiedCost);
+            }
+
             bill.getMembers().forEach(member -> {
-                if (Objects.equals(member.getEmail(), bill.getWhoPaied().getEmail())) {
-                    pairs.replace(member.getEmail(), pairs.get(member.getEmail()) + whoPaiedCost);
-                } else {
+                if (!member.getEmail().equals(bill.getWhoPaied().getEmail())) {
                     pairs.replace(member.getEmail(), pairs.get(member.getEmail()) - perPersonCost);
                 }
             });
+
         });
 
         pairs.forEach((key, value) -> {

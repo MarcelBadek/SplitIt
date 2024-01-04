@@ -59,7 +59,8 @@ public class GroupCreate extends AppCompatActivity {
             public void onClick(View v) {
                 UUID id = UUID.randomUUID();
                 String name = String.valueOf(nameEditText.getText());
-                Group newGroup = new Group(id.toString(), name, new ArrayList<>(Collections.singleton(new Member(user.getEmail()))), null);
+                Member owner = new Member(user.getEmail());
+                Group newGroup = new Group(id.toString(), name, owner, new ArrayList<>(Collections.singleton(owner)), null);
                 try {
                     db.document(id.toString()).set(newGroup).addOnSuccessListener(new OnSuccessListener() {
                                 @Override
