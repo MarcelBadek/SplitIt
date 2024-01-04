@@ -11,7 +11,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.OnBackPressedCallback;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -20,16 +19,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.splitit.Adapter.MemberAdapter;
 import com.example.splitit.Model.Bill;
 import com.example.splitit.Model.Group;
-import com.example.splitit.Model.Member;
 import com.example.splitit.Model.Transaction;
 import com.example.splitit.utils.Reckoning;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
@@ -38,6 +37,9 @@ public class GroupView extends AppCompatActivity {
     TextView nameTV;
     Button addMemberBtn;
     Button addBillBtn;
+    Button settleBillsBtn;
+    Button showCurrentBillsBtn;
+    Button showSettledBillsBtn;
     TextView totalCostTV;
     CollectionReference collection;
     String groupId;
@@ -47,61 +49,63 @@ public class GroupView extends AppCompatActivity {
     HashMap<String, Double> balance;
     List<Transaction> transactions;
     DecimalFormat decimalFormat;
+    FirebaseAuth auth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_view);
+        auth = FirebaseAuth.getInstance();
         groupId = Objects.requireNonNull(getIntent().getExtras()).getString("groupId");
         decimalFormat = new DecimalFormat("0.00");
 
+        nameTV = findViewById(R.id.name);
+        totalCostTV = findViewById(R.id.total_cost);
+        recyclerView = findViewById(R.id.recycler_view);
+
         addMemberBtn = findViewById(R.id.btn_addMember);
         addBillBtn = findViewById(R.id.btn_addBill);
+        settleBillsBtn = findViewById(R.id.btn_settleBills);
+        showCurrentBillsBtn = findViewById(R.id.btn_showCurrentBills);
+        showSettledBillsBtn = findViewById(R.id.btn_showSettledBills);
 
         collection = FirebaseFirestore.getInstance().collection("groups");
-        collection.document(groupId).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        group = document.toObject(Group.class);
-                        balance = Reckoning.calculateBalance(group);
-                        transactions = Reckoning.calculateTransactions(balance);
-                        setDisplayInfo();
-                        setRecyclerView();
-                    } else {
-                        Toast.makeText(GroupView.this, "Failed", Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                        finish();
-                    }
+        collection.document(groupId).get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                DocumentSnapshot document = task.getResult();
+                if (document.exists()) {
+                    group = document.toObject(Group.class);
+                    balance = Reckoning.calculateBalance(group);
+                    transactions = Reckoning.calculateTransactions(balance);
+                    setDisplayInfo();
+                    setRecyclerView();
                 } else {
                     Toast.makeText(GroupView.this, "Failed", Toast.LENGTH_SHORT).show();
                     startActivity(new Intent(getApplicationContext(), MainActivity.class));
                     finish();
                 }
-            }
-        });
-
-        addMemberBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), GroupAddMember.class);
-                intent.putExtra("groupId", groupId);
-                startActivity(intent);
+            } else {
+                Toast.makeText(GroupView.this, "Failed", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(getApplicationContext(), MainActivity.class));
                 finish();
             }
         });
 
-        addBillBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), GroupAddBill.class);
-                intent.putExtra("groupId", groupId);
-                startActivity(intent);
-                finish();
-            }
+        addMemberBtn.setOnClickListener(v -> {
+            Intent intent = new Intent(getApplicationContext(), GroupAddMember.class);
+            intent.putExtra("groupId", groupId);
+            startActivity(intent);
+            finish();
         });
+
+        addBillBtn.setOnClickListener(v -> {
+            Intent intent = new Intent(getApplicationContext(), GroupAddBill.class);
+            intent.putExtra("groupId", groupId);
+            startActivity(intent);
+            finish();
+        });
+
+        settleBillsBtn.setOnClickListener(v -> settleBills());
 
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
             @Override
@@ -113,8 +117,6 @@ public class GroupView extends AppCompatActivity {
     }
 
     private void setDisplayInfo() {
-        nameTV = findViewById(R.id.name);
-        totalCostTV = findViewById(R.id.total_cost);
         nameTV.setText(group.getName());
 
         List<Bill> bills = group.getCurrentBills();
@@ -128,44 +130,68 @@ public class GroupView extends AppCompatActivity {
     }
 
     private void setRecyclerView() {
-        recyclerView = findViewById(R.id.recycler_view);
         adapter = new MemberAdapter(group.getMembers(), balance);
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         recyclerView.setAdapter(adapter);
 
-        adapter.setOnClickListener(new MemberAdapter.OnClickListener() {
-            @Override
-            public void onClick(int position, Member model) {
-                ConstraintLayout main = findViewById(R.id.main_element);
+        adapter.setOnClickListener((position, model) -> {
+            ConstraintLayout main = findViewById(R.id.main_element);
 
-                View view = View.inflate(GroupView.this, R.layout.activity_pop_up, null);
-                Button closeBtn = view.findViewById(R.id.btn_close);
-                TextView textView = view.findViewById(R.id.text);
-                int width = LinearLayout.LayoutParams.WRAP_CONTENT;
-                int height = LinearLayout.LayoutParams.WRAP_CONTENT;
-                PopupWindow popupWindow = new PopupWindow(view, width, height, false);
-                popupWindow.showAtLocation(main, Gravity.CENTER, 0, 0);
-                StringBuilder builder = new StringBuilder();
+            View view = View.inflate(GroupView.this, R.layout.activity_pop_up, null);
+            Button closeBtn = view.findViewById(R.id.btn_close);
+            TextView textView = view.findViewById(R.id.text);
+            int width = LinearLayout.LayoutParams.WRAP_CONTENT;
+            int height = LinearLayout.LayoutParams.WRAP_CONTENT;
+            PopupWindow popupWindow = new PopupWindow(view, width, height, false);
+            popupWindow.showAtLocation(main, Gravity.CENTER, 0, 0);
+            StringBuilder builder = new StringBuilder();
 
-                transactions.forEach(transaction -> {
-                    if (Objects.equals(transaction.getFrom(), model.getEmail())) {
-                        builder.append(decimalFormat.format(transaction.getPrice())).append(" to ").append(transaction.getTo()).append("\n");
-                    }
-                });
-
-                if (builder.length() == 0) {
-                    builder.append("You don't need to send any money! :D");
+            transactions.forEach(transaction -> {
+                if (Objects.equals(transaction.getFrom(), model.getEmail())) {
+                    builder.append(decimalFormat.format(transaction.getPrice())).append(" to ").append(transaction.getTo()).append("\n");
                 }
+            });
 
-                textView.setText(builder.toString());
-
-                closeBtn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        popupWindow.dismiss();
-                    }
-                });
+            if (builder.length() == 0) {
+                builder.append("You don't need to send any money! :D");
             }
+
+            textView.setText(builder.toString());
+
+            closeBtn.setOnClickListener(v -> popupWindow.dismiss());
         });
+    }
+
+    private void settleBills() {
+        FirebaseUser user = auth.getCurrentUser();
+
+        if (!Objects.equals(user.getEmail(), group.getOwner().getEmail())) {
+            Toast.makeText(GroupView.this, "Only group owner can settle bills - " +  group.getOwner().getEmail(), Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        if (group.getCurrentBills() == null) {
+            return;
+        }
+        if (group.getCurrentBills().isEmpty()) {
+            return;
+        }
+
+        if (group.getSettledBills() == null) {
+            group.setSettledBills(new ArrayList<>());
+        }
+
+        group.getSettledBills().addAll(group.getCurrentBills());
+        group.setCurrentBills(new ArrayList<>());
+        HashMap<String, Object> updates = new HashMap<>();
+        updates.put("currentBills", group.getCurrentBills());
+        updates.put("settledBills", group.getSettledBills());
+        collection.document(groupId).update(updates)
+                .addOnSuccessListener(unused -> {
+                    Toast.makeText(GroupView.this, "Success", Toast.LENGTH_SHORT).show();
+                    recreate();
+                })
+                .addOnFailureListener(e -> Toast.makeText(GroupView.this, "Failure", Toast.LENGTH_SHORT).show());
+
     }
 }
