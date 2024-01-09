@@ -12,7 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.example.splitit.Adapter.BillAdapter;
+import com.example.splitit.Adapter.CheckboxAdapter;
 import com.example.splitit.Model.Bill;
 import com.example.splitit.Model.Group;
 import com.example.splitit.Model.Member;
@@ -38,7 +38,7 @@ public class GroupAddBill extends AppCompatActivity {
     TextInputEditText priceTIET;
     Button addBillBtn;
     RecyclerView recyclerView;
-    BillAdapter adapter;
+    CheckboxAdapter adapter;
     String groupId;
     Group group;
     List<Member> selected;
@@ -156,11 +156,11 @@ public class GroupAddBill extends AppCompatActivity {
 
     private void setRecyclerView() {
         recyclerView = findViewById(R.id.recycler_view);
-        adapter = new BillAdapter(group.getMembers());
+        adapter = new CheckboxAdapter(group.getMembers());
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         recyclerView.setAdapter(adapter);
 
-        adapter.setOnClickListener(new BillAdapter.OnClickListener() {
+        adapter.setOnClickListener(new CheckboxAdapter.OnClickListener() {
             @Override
             public void onClick(int position, Member model) {
                 if (selected.contains(model)) {

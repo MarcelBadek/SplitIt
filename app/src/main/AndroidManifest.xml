@@ -15,6 +15,12 @@
         android:theme="@style/Theme.SplitIt"
         tools:targetApi="31">
         <activity
+            android:name=".BillsSettled"
+            android:exported="false" />
+        <activity
+            android:name=".BillsCurrent"
+            android:exported="false" />
+        <activity
             android:name=".GroupAddBill"
             android:exported="false" />
         <activity

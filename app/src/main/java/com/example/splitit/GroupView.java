@@ -107,6 +107,22 @@ public class GroupView extends AppCompatActivity {
 
         settleBillsBtn.setOnClickListener(v -> settleBills());
 
+        showCurrentBillsBtn.setOnClickListener(v -> {
+            Intent intent = new Intent(getApplicationContext(), BillsCurrent.class);
+            intent.putExtra("groupId", groupId);
+            intent.putExtra("group", group);
+            startActivity(intent);
+            finish();
+        });
+
+        showSettledBillsBtn.setOnClickListener(v -> {
+            Intent intent = new Intent(getApplicationContext(), BillsSettled.class);
+            intent.putExtra("groupId", groupId);
+            intent.putExtra("group", group);
+            startActivity(intent);
+            finish();
+        });
+
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {

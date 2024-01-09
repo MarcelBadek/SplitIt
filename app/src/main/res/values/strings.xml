@@ -18,4 +18,6 @@
     <string name="settle_bills">Settle bills</string>
     <string name="settled_bills">Settled bills</string>
     <string name="current_bills">Current bills</string>
+    <string name="paied_by">Paied by</string>
+    <string name="bill_members">People who need to give back money</string>
 </resources>
