@@ -20,6 +20,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16sp"
         android:textSize="24sp"
+        android:contentDescription="Close popup with settle information"
         android:text="@string/ok" />
 
 </LinearLayout>

@@ -9,15 +9,17 @@
     tools:context=".GroupCreate">
 
     <TextView
-        android:gravity="center"
-        android:textSize="32sp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/add_member"/>
+        android:contentDescription="Below is form for adding member to group by email"
+        android:gravity="center"
+        android:text="@string/add_member"
+        android:textSize="32sp" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:contentDescription="Provide email">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/email"
@@ -29,17 +31,19 @@
 
     <Button
         android:id="@+id/btn_addMember"
-        android:layout_marginTop="16sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16sp"
+        android:contentDescription="Button that perform adding member to group with given email"
         android:text="@string/add_member" />
 
     <TextView
         android:id="@+id/back"
-        android:text="@string/back"
-        android:gravity="center"
-        android:layout_marginTop="32sp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32sp"
+        android:contentDescription="Button that moves to group activity"
+        android:gravity="center"
+        android:text="@string/back" />
 
 </LinearLayout>

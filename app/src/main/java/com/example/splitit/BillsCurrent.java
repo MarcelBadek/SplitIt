@@ -12,6 +12,7 @@ import com.example.splitit.Adapter.BillAdapter;
 import com.example.splitit.Adapter.MemberAdapter;
 import com.example.splitit.Model.Group;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 public class BillsCurrent extends AppCompatActivity {
@@ -27,6 +28,10 @@ public class BillsCurrent extends AppCompatActivity {
 
         groupId = Objects.requireNonNull(getIntent().getExtras()).getString("groupId");
         group = (Group) getIntent().getSerializableExtra("group");
+
+        if (group.getCurrentBills() == null) {
+            group.setCurrentBills(new ArrayList<>());
+        }
 
         recyclerView = findViewById(R.id.recycler_view);
 

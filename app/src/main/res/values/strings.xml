@@ -20,4 +20,6 @@
     <string name="current_bills">Current bills</string>
     <string name="paied_by">Paied by</string>
     <string name="bill_members">People who need to give back money</string>
+    <string name="groups">Groups</string>
+    <string name="members">Members</string>
 </resources>

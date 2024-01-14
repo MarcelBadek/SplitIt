@@ -9,15 +9,17 @@
     tools:context=".GroupCreate">
 
     <TextView
-        android:gravity="center"
-        android:textSize="32sp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/create_group"/>
+        android:contentDescription="Below is form for creating group action"
+        android:gravity="center"
+        android:text="@string/create_group"
+        android:textSize="32sp" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:contentDescription="Group name input for creating group">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/name"
@@ -29,17 +31,19 @@
 
     <Button
         android:id="@+id/btn_createGroup"
-        android:layout_marginTop="16sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16sp"
+        android:contentDescription="Button that perform group creation with given name"
         android:text="@string/create_group" />
 
     <TextView
         android:id="@+id/back"
-        android:text="@string/back"
-        android:gravity="center"
-        android:layout_marginTop="32sp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32sp"
+        android:contentDescription="Button that moves you to main page"
+        android:gravity="center"
+        android:text="@string/back" />
 
 </LinearLayout>

@@ -9,12 +9,13 @@
     tools:context=".Login">
 
     <TextView
-        android:gravity="center"
-        android:textSize="32sp"
-        android:layout_marginBottom="16sp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/register" />
+        android:layout_marginBottom="16sp"
+        android:contentDescription="Below is form for register action"
+        android:gravity="center"
+        android:text="@string/register"
+        android:textSize="32sp" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
@@ -25,6 +26,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="8sp"
+            android:contentDescription="Email input for register"
             android:hint="@string/email" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -37,22 +39,25 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="8sp"
-            android:inputType="textPassword"
-            android:hint="@string/password" />
+            android:contentDescription="Password input for login"
+            android:hint="@string/password"
+            android:inputType="textPassword" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
         android:id="@+id/btn_register"
-        android:layout_marginTop="16sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16sp"
+        android:contentDescription="Button that perform register action"
         android:text="@string/register" />
 
     <TextView
         android:id="@+id/btn_login"
-        android:layout_marginTop="48sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/login"/>
+        android:layout_marginTop="48sp"
+        android:contentDescription="Button that moves to login activity"
+        android:text="@string/login" />
 
 </LinearLayout>
