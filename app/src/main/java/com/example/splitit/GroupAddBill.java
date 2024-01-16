@@ -28,8 +28,11 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -108,8 +111,9 @@ public class GroupAddBill extends AppCompatActivity {
 
                                 double price = 0;
                                 try {
-                                    price = Double.parseDouble(priceStr);
+                                    price = Double.parseDouble(priceStr.replaceAll(",", "."));
                                     DecimalFormat df = new DecimalFormat("0.00");
+                                    df.setDecimalFormatSymbols(DecimalFormatSymbols.getInstance(Locale.US));
                                     price = Double.parseDouble(df.format(price));
                                 } catch (Exception e) {
                                     Toast.makeText(GroupAddBill.this, "Wrong price", Toast.LENGTH_SHORT).show();
