@@ -165,7 +165,7 @@ public class GroupView extends AppCompatActivity {
 
             transactions.forEach(transaction -> {
                 if (Objects.equals(transaction.getFrom(), model.getEmail())) {
-                    builder.append(decimalFormat.format(transaction.getPrice())).append(" to ").append(transaction.getTo()).append("\n");
+                    builder.append(decimalFormat.format(transaction.getPrice())).append("$ to ").append(transaction.getTo()).append("\n");
                 }
             });
 
