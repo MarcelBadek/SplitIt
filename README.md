@@ -4,5 +4,3 @@ Users of the app can form shared groups, wherein members can easily identify who
 When adding a new bill, users have option to choose members to whom the expenses apply and price of bill.
 
 App has custom messages for accessibility services - screen readers.
-
-Application is inspired by Splitwise and was created for educational purposes.
